@@ -51,3 +51,7 @@ temp-github-upload/
 # TypeScript 缓存
 *.tsbuildinfo
 next-env.d.ts
+
+# 图片文件（已上传到 R2，不需要在 git 中）
+emo-visual-data/emo/
+emo-visual-data/*.backup
