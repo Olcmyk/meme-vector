@@ -8,10 +8,13 @@ interface MemeCardProps {
 }
 
 export default function MemeCard({ meme }: MemeCardProps) {
+  // 转换图片 URL 为 API 路径
+  const imageApiUrl = `/api/image?path=${encodeURIComponent(meme.imageUrl)}`;
+
   const handleCopy = async () => {
     try {
       // 尝试复制图片
-      const response = await fetch(meme.imageUrl);
+      const response = await fetch(imageApiUrl);
       const blob = await response.blob();
       await navigator.clipboard.write([
         new ClipboardItem({ [blob.type]: blob }),
@@ -25,7 +28,7 @@ export default function MemeCard({ meme }: MemeCardProps) {
 
   const handleDownload = () => {
     const link = document.createElement('a');
-    link.href = meme.imageUrl;
+    link.href = imageApiUrl;
     link.download = `meme-${meme.id}.jpg`;
     document.body.appendChild(link);
     link.click();
@@ -36,7 +39,7 @@ export default function MemeCard({ meme }: MemeCardProps) {
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
       <div className="relative aspect-square bg-gray-100">
         <Image
-          src={meme.imageUrl}
+          src={imageApiUrl}
           alt={meme.description.substring(0, 100)}
           fill
           className="object-contain"
