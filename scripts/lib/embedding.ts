@@ -16,13 +16,17 @@ async function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function generateEmbedding(text: string, retries = 3): Promise<number[]> {
+export async function generateEmbedding(text: string, imageUrl?: string, retries = 3): Promise<number[]> {
   if (!SILICONFLOW_API_KEY) {
     throw new Error('SILICONFLOW_API_KEY not found in environment variables');
   }
 
   for (let attempt = 0; attempt < retries; attempt++) {
     try {
+      // 如果提供了图片 URL，使用数组格式同时传入图片和文字
+      // Qwen3-VL 支持数组格式: [imageUrl, text]
+      const input = imageUrl ? [imageUrl, text] : text;
+
       const response = await fetch(SILICONFLOW_API_URL, {
         method: 'POST',
         headers: {
@@ -31,7 +35,7 @@ export async function generateEmbedding(text: string, retries = 3): Promise<numb
         },
         body: JSON.stringify({
           model: MODEL,
-          input: text,
+          input: input,
           encoding_format: 'float',
         }),
       });

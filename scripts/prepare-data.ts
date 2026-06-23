@@ -80,12 +80,14 @@ async function processInBatches() {
       const memeId = `meme_${globalIndex.toString().padStart(5, '0')}`;
 
       try {
-        // 生成向量
-        console.log(`  [${globalIndex + 1}/${memeData.length}] Generating embedding for ${meme.filename}...`);
+        // 获取图片 URL（仅用于 metadata）
+        const imageUrl = getImageUrl(meme.filename, IMAGE_BASE_DIR);
+
+        // 生成纯文本向量（只用文字描述）
+        console.log(`  [${globalIndex + 1}/${memeData.length}] Generating text embedding for ${meme.filename}...`);
         const embedding = await generateEmbedding(meme.content);
 
         // 构建向量记录
-        const imageUrl = getImageUrl(meme.filename, IMAGE_BASE_DIR);
         const vector: Vector = {
           id: memeId,
           values: embedding,

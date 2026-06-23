@@ -19,6 +19,7 @@ export function loadMemeData(dataPath: string): MemeData[] {
 }
 
 export function getImageUrl(filename: string, baseDir: string): string {
-  // 构建图片的相对路径
-  return path.join(baseDir, 'emo', filename);
+  // 返回 R2 CDN URL 而不是本地路径
+  const R2_PUBLIC_URL = process.env.R2_PUBLIC_URL || 'https://pub-8afedeb37e124f06aef2f0e431bc3aaf.r2.dev';
+  return `${R2_PUBLIC_URL}/${filename}`;
 }
